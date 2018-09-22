@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="src/assets/semantic.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700" rel="stylesheet">
+        <!-- <link rel="stylesheet" href="http://semantic-ui-forest.com/static/dist/semantic-ui/forest-themes/bootswatch/semantic.superhero.min.css"> -->
+        <style>
+
+          body
+          {
+            background: #2b3e50;
+            color:white;
+            font-family: 'Roboto', sans-serif;
+          }
+          
+          .mood {
+              background-color:#aaa;
+              width:100%;
+              height:400px;
+          }
+
+          .title1 {
+              font-family: 'Roboto';
+              font-weight: 100;
+              font-size:30px;
+              color:slategray;
+          }
+          /* .mstyles a {
+            padding: 10px 20px;
+            color: white;
+          }
+
+          .red {   background: #db2828 !important;}
+          .orange { background: #F2711C !important;}
+          .yellow { background: #FBBD08 !important;} */
+
+          #filterPanel button {
+              margin-bottom:4px;
+              width:100px;
+          }
+          </style>
+
+        <script  src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <div style="padding:10px 5px;">
+
+        <div class="ui grid stackable">
+
+            <div class="three wide column">
+                <p class="title1" >Discovery</p>
+                <form class="ui form">
+                    <input type="text" placeholder="Search artists">
+                </form>
+            </div>
+
+            <div class="eight wide column">
+                <p class="title1">Mood</p>  
+                <div id="moodContainer" class="ui segment" style="height:300px"></div>
+            </div>
+
+            <div id="filterPanel" class="five wide column">
+
+                <p class="title1">Filters</p>  
+            
+                <button class="ui red basic button">Rock</button>
+                <button class="ui orange basic button">Electro</button>
+                <button class="ui yellow basic button">Classical</button>
+                <button class="ui olive basic button">Folk</button>
+                <button class="ui green basic button">Blues</button>
+                <button class="ui teal basic button">HipHop</button>
+                
+            </div>
+        </div>
+    </div>  
+
+    <script>
+//      $('select.dropdown')
+//   .dropdown('set selected', ['meteor', 'ember'])
+// ;
+     </script>
+    </body>
+</html>

@@ -6,9 +6,8 @@
             <text x="40%" y="10%" fill="black" font-size="25">Energetic</text>
             <text x="44%" y="95%" fill="black"  font-size="25">Calm</text>
             <text x="5" y="50%" fill="black" font-size="25">Dark</text>
-            <text x="85%" y="50%" fill="black" font-size="25">Positive</text>
+            <text x="80%" y="50%" fill="black" font-size="25">Positive</text>
            
-            <!-- <circle  cx="10" cy="10" r="15" fill="#2185D0" /> -->
             <circle v-for="track in filteredTracks"  
                     :cx="getX(track)" 
                     :cy="getY(track)" 
@@ -16,13 +15,6 @@
                     :fill="getColor(track)" />
 
         </svg> 
-        {{filters}}
-       
-        <!-- <section>
-            <div v-for="t in tracks" class="card">
-                  <h3>{{ t.artist.name}}</h3>
-            </div> 
-        </section> -->
     </div>
 </template>
 
@@ -34,12 +26,12 @@ export default {
   // data: {
 
   // },
-  props: ['tracks', 'genres','filters'],
+  props: ['tracks', 'genres'],
   computed: {
     filteredTracks() {
         
-        var f =  this.tracks.filter(t => this.filters.genres.includes(t.genre));
-        return f;
+        var filtered =  this.tracks.filter(t => this.$myStore.state.genres.includes(t.genre));
+        return filtered;
     }
   },
   methods: {
@@ -48,15 +40,18 @@ export default {
       return (Number(track.valence) / 1000000) * 100 + '%';
     },
     getY(track) {
+
       return (100 -(Number(track.arousal) / 1000000) * 100) + '%';
     },
     getRadius(track) {
+
         return 4;
     },
     getColor(track) {
-        let style = this.genres.find(s => s.name.toLowerCase() == track.genre);
-        if(style)
-            return style.color;
+
+        const genre = this.genres.find(s => s.name.toLowerCase() == track.genre);
+        if(genre)
+            return genre.color;
         return 'black';
     }
   }

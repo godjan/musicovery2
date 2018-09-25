@@ -2,7 +2,10 @@ import axios from 'axios';
 
 
 const ApiProviders = {
-  MUSICOVERY_API_TAG: "https://localhost:44362/api/tracks/"
+  MUSICOVERY_API_TAG: "https://localhost:44362/api/tracks/",
+  SPOTIFY_AUTH_API: "https://localhost:44362/api/spotify/auth",
+  SPOTIFY_TRACK_API: "https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl",
+  LAST_FM_API: 'http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&api_key=e5d72f17e62405282fe70f0dc599ab23&format=json'
 };
 
 
@@ -12,11 +15,28 @@ export default {
   // },
   async search(tag) {
 
-    return axios.get(ApiProviders.MUSICOVERY_API_TAG + tag);
+    return axios.get(ApiProviders.LAST_FM_API + '&tag=' + tag)
+    // axios.get(ApiProviders.MUSICOVERY_API_TAG + tag);
   },
   getMoodPlaylist() {
     return moodApiResult;
-  }
+  },
+  spotifyAuth() {
+      
+    return axios.get(ApiProviders.SPOTIFY_AUTH_API);
+  },
+  spotifyGetTrack() {
+   
+    const AuthStr = 'Bearer '.concat(this.spotify_token);
+    axios.get(ApiProviders.SPOTIFY_TRACK_API, { headers: { Authorization: AuthStr } }).then(response => {
+            // If request is good...
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log('error 3 ' + error);
+          });
+  },
+  spotify_token:''
 };
 
 

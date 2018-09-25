@@ -3,10 +3,12 @@
   <div style="padding:10px 5px;" id="app">
 
     <div class="ui grid stackable">
+
       <div class="three wide column">
           <search :showLoader="showLoader" @onSearch="callSearchApi"></search>
            <button class="ui green button" @click="getPlaylist">Get playlist</button> 
-        
+        {{spotify_token}}
+      
       </div>
 
       <div class="eight wide column">
@@ -14,7 +16,8 @@
             <div class="moodContainer" >
                <MusicMap :tracks="tracks" 
                          :genres="genres"
-                         :filters="filterlist"></MusicMap>
+                         ></MusicMap>
+                          <!-- :filterStore="filterStore"-->
 
                 <div class="ui negative message" v-show="callApiError">
                     <i class="close icon" @click="callApiError = false"></i>
@@ -27,12 +30,49 @@
 
       <div id="filterPanel" class="five wide column">
           <filters  :decades="decades" 
-                    :genres="genres" 
-                    @genreChanged="onGenreChanged" 
-                    @decadeChanged="onDecadeChanged">
+                    :genres="genres">
+                   <!-- :filterStore="filterStore">
+                    < @genreChanged="onGenreChanged" 
+                    @decadeChanged="onDecadeChanged"
+                    @allGenres="allGenresClicked"
+                    @noGenres="noGenresClicked"> -->
           </filters>
       </div>
     </div>
+
+    <div class="ui two column stackable grid">
+
+  <div class="column">
+    <div class="ui raised segment">
+      <div class="ui placeholder">
+        <div class="image header">
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+        <div class="paragraph">
+          <div class="medium line"></div>
+          <div class="short line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="ui raised segment">
+      <div class="ui placeholder">
+        <div class="image header">
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+        <div class="paragraph">
+          <div class="medium line"></div>
+          <div class="short line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+
   </div>
       
 </template>
@@ -43,37 +83,38 @@ import ToggleButton from "./components/ToggleButton";
 import Search from "./components/Search";
 import MusicMap from "./components/MusicMap";
 import DataService from './services/api.js'
+//import Store from './services/store.js'
 
+//let filter_store = new Store();
 
-const myMixin = {
+// const myMixin = {
 
-  methods: {
-    toggleElement(arr, element) {
-      if (!arr.includes(element)) {
-        arr.push(element);
-      } else {
-        var index = arr.indexOf(element);
-        if (index != -1) arr.splice(index, 1);
-      }
-    }
-  }
-};
+//   methods: {
+//     toggleElement(arr, element) {
+//       if (!arr.includes(element)) {
+//         arr.push(element);
+//       } else {
+//         var index = arr.indexOf(element);
+//         if (index != -1) arr.splice(index, 1);
+//       }
+//     }
+//   }
+// };
 
 export default {
   name: "app",
-  mixins: [myMixin],
+  //mixins: [myMixin],
   data: function() {
 
     return {
+    
+      spotify_token:'',
       showLoader: false,
       callApiError: false,
       errorMessage: "",
       search: "",
       tracks: [],
-      filterlist: {
-        genres: [],
-        decades: []
-      },
+      filterStore: this.$myStore,//filter_store,
       decades: [
         { title: "60" },
         { title: "70" },
@@ -90,30 +131,60 @@ export default {
         { name: "Hip Hop", color: "pink" },
         { name: "R & B", color: "violet" },
         { name: "Jazz", color: "purple" },
+        { name: "Blues", color: "blue" },
         { name: "Classical", color: "grey" },
         { name: "Soundtrack", color: "brown" },
-        { name: "Latin", color: "olive" }
+        { name: "Latin", color: "olive" },
+        { name: "Reggae", color: "black" },
+        { name: "Country", color: "red" },
       ]
     };
   },
+ 
   mounted() {
-    this.filterlist.genres = this.genres.map( g=> g.name.toLowerCase());
-    this.filterlist.decades = this.decades.map(d => d.title)
+
+    this.filterStore.setGenres(this.genres.map( g=> g.name.toLowerCase()));
+    this.filterStore.setDecades(this.decades.map(d => d.title))
+
+   // this.spotifyAuth();
+
+    console.log('mounted')
+  },
+  computed: {
+
   },
   methods: {
 
+    spotifyGetTrack() {
+
+      DataService.spotifyGetTrack();
+    },
+    spotifyAuth() {
+
+      DataService.spotifyAuth().
+                  then(response => { 
+
+                    if(response.status == 200) {
+
+                        DataService.spotify_token = response.data.access_token;
+                        this.spotify_token = response.data.access_token;
+                        this.spotifyGetTrack();
+                    }
+                    console.log(response)
+                  });
+    },
     async callSearchApi(tag) {
 
-      this.callApiError = false;
-      this.showLoader = true;
-      this.tracks = [];
-
-      DataService.search(tag)
-      //this.$axios.get('https://localhost:44362/api/tracks/' + tag)
-                 .then(this.searchResponseReceived)
-                 .then(_ => {
-                    this.showLoader = false;
-                 });
+      // this.callApiError = false;
+       this.showLoader = true;
+       this.tracks = [];
+       DataService.search(tag).then(response => console.log(response.data.tracks.track))
+                              .then(_=> this.showLoader = false)
+      // DataService.search(tag)
+      //            .then(this.searchResponseReceived)
+      //            .then(_ => {
+      //               this.showLoader = false;
+      //            });
     },
     getPlaylist() {
 
@@ -121,12 +192,22 @@ export default {
           this.tracks = tracks.tracks;
           console.log(tracks)
     },
-    onGenreChanged: function(style) {
-      this.toggleElement(this.filterlist.genres, style);
-    },
-    onDecadeChanged: function(d) {
-      this.toggleElement(this.filterlist.decades, d);
-    },
+    // onGenreChanged: function(genre) {
+
+    //  // this.toggleElement(this.filterlist.genres, genre);
+    // },
+    // onDecadeChanged: function(decade) {
+
+    //   //this.toggleElement(this.filterlist.decades, decade);
+    // },
+    // allGenresClicked() {
+    //     //this.filterlist.genres = this.genres.map( g=> g.name.toLowerCase());
+    //     this.filterStore.setGenresFilter(this.genres.map( g=> g.name.toLowerCase()));
+    // },
+    // noGenresClicked() {
+    //     //this.filterlist.genres = [];
+    //     this.filterStore.clearGenresFilter();
+    // },
     searchResponseReceived: function(response) {
 
       if (!response.data) {

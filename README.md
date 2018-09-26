@@ -1,6 +1,6 @@
 # musicovery2
 
-> A Vue.js project
+> An attempt to recreate the now dead Musicovery service, a music map app based on mood / similar artist
 
 ## Build Setup
 

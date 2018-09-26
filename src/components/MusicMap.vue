@@ -12,7 +12,10 @@
                     :cx="getX(track)" 
                     :cy="getY(track)" 
                     :r="getRadius(track)" 
-                    :fill="getColor(track)" />
+                    :fill="getColor(track)" 
+                    @click="launchPlaylist(track)">
+                    <title>{{track.artist.name + ' ' + track.title}}</title>
+            </circle>
 
         </svg> 
     </div>
@@ -45,7 +48,7 @@ export default {
     },
     getRadius(track) {
 
-        return 4;
+        return 8 * (Number(track.popularity)/100);
     },
     getColor(track) {
 
@@ -53,6 +56,11 @@ export default {
         if(genre)
             return genre.color;
         return 'black';
+    },
+    launchPlaylist(track) {
+
+        this.$emit('trackClicked', track)
+        console.log('MusicMap sending launch playlist for : ' + track.artist.name + ': ' + track.title)
     }
   }
 };

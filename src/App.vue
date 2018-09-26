@@ -1,80 +1,52 @@
 <template>
 
-  <div style="padding:10px 5px;" id="app">
+  <div style="padding:15px 15px;" id="app">
 
     <div class="ui grid stackable">
 
-      <div class="three wide column">
+      <!-- <div class="three wide column">
           <search :showLoader="showLoader" @onSearch="callSearchApi"></search>
-           <button class="ui green button" @click="getPlaylist">Get playlist</button> 
+           <button class="ui green button" @click="launchPlaylist">Get playlist</button>
         {{spotify_token}}
-      
-      </div>
 
-      <div class="eight wide column">
-            <p class="title1">Mood</p>  
+      </div> -->
+
+      <div class="eleven wide column">
+            <p class="title1">Mood</p>
             <div class="moodContainer" >
-               <MusicMap :tracks="tracks" 
+               <MusicMap :tracks="tracks"
                          :genres="genres"
-                         ></MusicMap>
-                          <!-- :filterStore="filterStore"-->
+                         @trackClicked="launchPlaylist"></MusicMap>
 
                 <div class="ui negative message" v-show="callApiError">
                     <i class="close icon" @click="callApiError = false"></i>
                     <div class="header"> Error </div>
                      {{ errorMessage }}
                 </div>
-               
+
             </div>
       </div>
 
       <div id="filterPanel" class="five wide column">
-          <filters  :decades="decades" 
+          <filters  :decades="decades"
                     :genres="genres">
-                   <!-- :filterStore="filterStore">
-                    < @genreChanged="onGenreChanged" 
-                    @decadeChanged="onDecadeChanged"
-                    @allGenres="allGenresClicked"
-                    @noGenres="noGenresClicked"> -->
           </filters>
       </div>
     </div>
 
-    <div class="ui two column stackable grid">
+    <section class="mt2">
+      <div class="ui grid stackable">
 
-  <div class="column">
-    <div class="ui raised segment">
-      <div class="ui placeholder">
-        <div class="image header">
-          <div class="line"></div>
-          <div class="line"></div>
-        </div>
-        <div class="paragraph">
-          <div class="medium line"></div>
-          <div class="short line"></div>
-        </div>
+         
+          <div class="sizteen wide column">
+              <Playlist :tracks="playlist" :autoplay="autoplay"></Playlist>
+          </div> 
+          
       </div>
-    </div>
-  </div>
-  <div class="column">
-    <div class="ui raised segment">
-      <div class="ui placeholder">
-        <div class="image header">
-          <div class="line"></div>
-          <div class="line"></div>
-        </div>
-        <div class="paragraph">
-          <div class="medium line"></div>
-          <div class="short line"></div>
-        </div>
-      </div>
-    </div>
-  </div>
- 
-</div>
+    </section>
 
   </div>
-      
+
 </template>
 
 <script>
@@ -82,6 +54,8 @@ import Filters from "./components/Filters";
 import ToggleButton from "./components/ToggleButton";
 import Search from "./components/Search";
 import MusicMap from "./components/MusicMap";
+import Playlist from "./components/Playlist"
+import Player from "./components/Player"
 import DataService from './services/api.js'
 //import Store from './services/store.js'
 
@@ -107,14 +81,16 @@ export default {
   data: function() {
 
     return {
-    
+
       spotify_token:'',
       showLoader: false,
       callApiError: false,
       errorMessage: "",
       search: "",
       tracks: [],
-      filterStore: this.$myStore,//filter_store,
+      playlist: [],
+      autoplay: false,
+      filterStore: this.$myStore,
       decades: [
         { title: "60" },
         { title: "70" },
@@ -140,21 +116,27 @@ export default {
       ]
     };
   },
- 
+
   mounted() {
 
     this.filterStore.setGenres(this.genres.map( g=> g.name.toLowerCase()));
     this.filterStore.setDecades(this.decades.map(d => d.title))
-
+    
+    this.getDefaultMap();
    // this.spotifyAuth();
-
-    console.log('mounted')
   },
   computed: {
 
   },
   methods: {
 
+    getDefaultMap() {
+
+      var tracks = DataService.getAllTracks()
+      console.log(tracks)
+        this.tracks = tracks.tracks;     
+    
+    },
     spotifyGetTrack() {
 
       DataService.spotifyGetTrack();
@@ -162,7 +144,7 @@ export default {
     spotifyAuth() {
 
       DataService.spotifyAuth().
-                  then(response => { 
+                  then(response => {
 
                     if(response.status == 200) {
 
@@ -186,18 +168,24 @@ export default {
       //               this.showLoader = false;
       //            });
     },
-    getPlaylist() {
-
+    launchPlaylist(track) {
+         
           var tracks = DataService.getMoodPlaylist();
           this.tracks = tracks.tracks;
-          console.log(tracks)
+
+          if(track) {
+
+            console.log('from App launch received playlist for : ' + track.artist.name + ': ' + track.title)
+            this.playlist = tracks.tracks.slice(); // simulate new playlist otherwise no change detected
+            this.autoplay = true;
+          }
     },
     // onGenreChanged: function(genre) {
-
+    //    this.filterStore.toggleGenre(genre);
     //  // this.toggleElement(this.filterlist.genres, genre);
     // },
     // onDecadeChanged: function(decade) {
-
+    //    this.filterStore.toggleDecade(decade);
     //   //this.toggleElement(this.filterlist.decades, decade);
     // },
     // allGenresClicked() {
@@ -242,7 +230,9 @@ export default {
     Filters,
     ToggleButton,
     Search,
-    MusicMap
+    MusicMap,
+    Playlist,
+    Player
   }
 };
 </script>
@@ -250,13 +240,16 @@ export default {
 <style>
 
 body {
-  background: #0a3d62;
-  color: #3c6382;
+  /* background: #0a3d62;
+  color: #3c6382; */
+      background: #576574;
+    color: #48dbfb;
   font-family: "Roboto", sans-serif;
+  font-weight:100;
 }
 
 .moodContainer {
-  
+
   width: 100%;
   height: 340px;
 }
@@ -264,7 +257,7 @@ body {
 .title1 {
   font-weight: 100;
   font-size: 30px;
-  color: #82ccdd;
+  /*color: #82ccdd;*/
 }
 
 .subtitle1 {
@@ -273,8 +266,11 @@ body {
   font-weight: 100;
   padding: 0;
   font-size: 20px;
-  color: #60a3bc;
+  /* color: #60a3bc; */
 }
+
+.mt1 { margin-top:10px; }
+.mt2 { margin-top:20px; }
 /* .mstyles a {
     padding: 10px 20px;
     color: white;

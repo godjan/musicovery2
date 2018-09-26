@@ -11,12 +11,13 @@
    
 
     <p class="subtitle1">Decades</p>
-    <ToggleButton   v-for="d in decades"
-                    :content="d.title" 
+    <ToggleButton   v-for="(decade, index) in decades"
+                    :key="'d' +index"
+                    :content="decade.title" 
                     :color="'blue'"
                     :size="'small'"
-                    @click="decadeToggled(d.title)"
-                    :selected="$myStore.state.decades.includes(d.title)"></ToggleButton>
+                    @click="decadeToggled(decade.title)"
+                    :selected="$myStore.state.decades.includes(decade.title)"></ToggleButton>
 
     <!-- <p class="subtitle1"> -->
        
@@ -30,7 +31,8 @@
         </div>
     </div>
     <!-- </p> -->
-    <ToggleButton   v-for="genre in genres"
+    <ToggleButton   v-for="(genre, index) in genres"
+                    :key="'g' + index"
                     :content="genre.name" 
                     :color="genre.color" 
                     @click="genreToggled(genre.name)"

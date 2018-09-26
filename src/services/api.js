@@ -19,7 +19,12 @@ export default {
     // axios.get(ApiProviders.MUSICOVERY_API_TAG + tag);
   },
   getMoodPlaylist() {
+
     return moodApiResult;
+  },
+  getAllTracks() {
+
+    return allTracksResult;
   },
   spotifyAuth() {
       
@@ -28,7 +33,8 @@ export default {
   spotifyGetTrack() {
    
     const AuthStr = 'Bearer '.concat(this.spotify_token);
-    axios.get(ApiProviders.SPOTIFY_TRACK_API, { headers: { Authorization: AuthStr } }).then(response => {
+    axios.get(ApiProviders.SPOTIFY_TRACK_API, { headers: { Authorization: AuthStr } })
+         .then(response => {
             // If request is good...
             console.log(response.data);
           })
@@ -39,6 +45,257 @@ export default {
   spotify_token:''
 };
 
+const allTracksResult = {
+
+    tracks: [
+        {
+            "id": "129208",
+            "title": "Strawberry Fields Forever",
+            "artist": {
+                "mbid": "9478e346-7c52-4780-9555-3d1577f0b905",
+                "name": "Me First and the Gimme Gimmes",
+                "genre": "rock"
+            },
+            "releasedate": "2004",
+            "genre": "rock",
+            "arousal": "916284",
+            "valence": "404100",
+            "popularity": "35",
+            "originalid": [],
+            "ASIN": "B0002XL26G",
+            "favorite": "0"
+        },
+        {
+            "id": "105102",
+            "title": "Misfits",
+            "artist": {
+                "mbid": "92a42e82-b36f-4308-82c1-68bad2e03c89",
+                "name": "Third Eye Blind",
+                "genre": "rock"
+            },
+            "releasedate": "2003",
+            "genre": "rock",
+            "arousal": "651775",
+            "valence": "401895",
+            "popularity": "60",
+            "originalid": [],
+            "favorite": "0"
+        },
+        {
+            "id": "58898",
+            "title": "So Good to Me",
+            "artist": {
+                "mbid": "4c376603-5ad0-40c9-aa03-d2a8325a4f86",
+                "name": "Sly & The Family Stone",
+                "genre": "randb"
+            },
+            "releasedate": "1975",
+            "genre": "randb",
+            "arousal": "0",
+            "valence": "0",
+            "popularity": "60",
+            "originalid": [],
+            "favorite": "0"
+        },
+        {
+            "id": "183256",
+            "title": "Turbosteppa",
+            "artist": {
+                "mbid": "3956e10d-9c6a-452c-b2ee-534e682cd1e8",
+                "name": "Claude VonStroke",
+                "genre": "electro"
+            },
+            "releasedate": "2012",
+            "genre": "electro",
+            "arousal": "722000",
+            "valence": "641363",
+            "popularity": "35",
+            "originalid": [],
+            "favorite": "0"
+        },
+        {
+            "id": "1001628",
+            "title": "Everybody Wants A Piece",
+            "artist": {
+                "mbid": "7c83dbe6-097d-4d4c-9353-9f772a4f756c",
+                "name": "Joe Louis Walker",
+                "genre": "blues"
+            },
+            "releasedate": "2015",
+            "genre": "blues",
+            "arousal": "0",
+            "valence": "0",
+            "popularity": "35",
+            "originalid": "0",
+            "favorite": "0"
+        },
+        {
+            "id": "179176",
+            "title": "Wild Tigers I Have Known",
+            "artist": {
+                "mbid": "0fa6cc65-79f0-4cc4-9f84-75e67961b4d4",
+                "name": "Emily Jane White",
+                "genre": "folk"
+            },
+            "releasedate": "2008",
+            "genre": "folk",
+            "arousal": "246167",
+            "valence": "434454",
+            "popularity": "35",
+            "originalid": [],
+            "ASIN": "B001UDURC2",
+            "favorite": "0"
+        },
+        {
+            "id": "72358",
+            "title": "KC Doppler",
+            "artist": {
+                "mbid": "1b698a5a-259f-4b6f-b39f-b15400bd1990",
+                "name": "Slide Five",
+                "genre": "electro"
+            },
+            "releasedate": "1997",
+            "genre": "electro",
+            "arousal": "493000",
+            "valence": "499534",
+            "popularity": "60",
+            "originalid": [],
+            "favorite": "0"
+        },
+        {
+            "id": "10323",
+            "title": "Prepare for the fight",
+            "artist": {
+                "mbid": "2d4c777e-e49f-4498-8f5b-2e89c4621d15",
+                "name": "The Lovemakers",
+                "genre": "rock"
+            },
+            "releasedate": "2006",
+            "genre": "rock",
+            "arousal": "728000",
+            "valence": "206764",
+            "popularity": "35",
+            "originalid": [],
+            "ASIN": "B000COQ8FU",
+            "favorite": "0"
+        },
+        {
+            "id": "60587",
+            "title": "Black Widow",
+            "artist": {
+                "mbid": "e2f41b6e-7045-44e8-86bf-deee758532e2",
+                "name": "Michelle Shocked",
+                "genre": "folk"
+            },
+            "releasedate": "1988",
+            "genre": "folk",
+            "arousal": "493000",
+            "valence": "206734",
+            "popularity": "35",
+            "originalid": [],
+            "ASIN": "B0000CBLA8",
+            "favorite": "0"
+        },
+        {
+            "id": "132274",
+            "title": "The Light",
+            "artist": {
+                "mbid": "ef2c6449-d02b-415b-ad8c-c14c08266552",
+                "name": "Sun Kil Moon",
+                "genre": "folk"
+            },
+            "releasedate": "2008",
+            "genre": "folk",
+            "arousal": "330834",
+            "valence": "360429",
+            "popularity": "35",
+            "originalid": "132263",
+            "ASIN": "B00158FK42",
+            "favorite": "0"
+        },
+        {
+            "id": "9427",
+            "title": "It ain't no fun to me",
+            "artist": {
+                "mbid": "25b83e80-5056-4741-8558-6f45551b078c",
+                "name": "Graham Central Station",
+                "genre": "randb"
+            },
+            "releasedate": "2003",
+            "genre": "randb",
+            "arousal": "716000",
+            "valence": "641363",
+            "popularity": "35",
+            "originalid": [],
+            "favorite": "0"
+        },
+        {
+            "id": "1003110",
+            "title": "A Little More (feat. Sansa)",
+            "artist": {
+                "mbid": "29ed4a49-fb99-4a5c-8713-609cabe6f34a",
+                "name": "Kaskade",
+                "genre": "electro"
+            },
+            "releasedate": "2015",
+            "genre": "electro",
+            "arousal": "0",
+            "valence": "0",
+            "popularity": "35",
+            "originalid": "0",
+            "favorite": "0"
+        },
+        {
+            "id": "108228",
+            "title": "Spaceman",
+            "artist": {
+                "mbid": "efef848b-63e4-4323-8ef7-69a48fbdd51d",
+                "name": "4 Non Blondes",
+                "genre": "rock"
+            },
+            "releasedate": "1992",
+            "genre": "rock",
+            "arousal": "590000",
+            "valence": "213347",
+            "popularity": "60",
+            "originalid": [],
+            "ASIN": "B000001Y5E",
+            "favorite": "0"
+        },
+        {
+            "id": "184113",
+            "title": "Just A Little",
+            "artist": {
+                "mbid": "f6f3a309-9d14-4b7c-895a-166333c25f9c",
+                "name": "The Beau Brummels",
+                "genre": "rock"
+            },
+            "releasedate": "2013",
+            "genre": "rock",
+            "arousal": "614000",
+            "valence": "383148",
+            "popularity": "60",
+            "originalid": [],
+            "favorite": "0"
+        },
+        {
+            "id": "14041",
+            "title": "Ordinary",
+            "artist": {
+                "mbid": "bfd5aec5-62a2-4560-a316-7c46c17babda",
+                "name": "Train",
+                "genre": "soundtrack"
+            },
+            "releasedate": "2004",
+            "genre": "soundtrack",
+            "arousal": "884000",
+            "valence": "316791",
+            "popularity": "35",
+            "originalid": [],
+            "favorite": "0"
+          }
+        ]
+    };
 
 //const DataService =
 const moodApiResult = {
